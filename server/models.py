@@ -9,21 +9,16 @@ class User(db.Model):
     username = db.Column(db.String, unique=True)
     _password_hash = db.Column(db.String)
 
-    # Step 1: Protect the password_hash property
     @hybrid_property
     def password_hash(self):
         raise Exception("Password hashes may not be viewed.")
 
-    # Step 2: Set password hash property using bcrypt
     @password_hash.setter
     def password_hash(self, password):
-        # Generate the hash and decode it to a string for storage
         hashed = bcrypt.generate_password_hash(password.encode('utf-8'))
         self._password_hash = hashed.decode('utf-8')
 
-    # Step 3: Authenticate method
     def authenticate(self, password):
-        # Check the provided password against the stored hash
         return bcrypt.check_password_hash(self._password_hash, password.encode('utf-8'))
 
     def __repr__(self):

@@ -28,7 +28,6 @@ class CheckSession(Resource):
         if user_id:
             user = User.query.filter(User.id == user_id).first()
             return user_schema.dump(user), 200
-        # Requirement: empty response with 204
         return {}, 204
 
 class Login(Resource):
@@ -55,7 +54,6 @@ class ClearSession(Resource):
         session['user_id'] = None
         return {}, 204
 
-# Register the routes
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(CheckSession, '/check_session')
